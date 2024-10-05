@@ -134,8 +134,8 @@ ingress_alb_enabled: false
 # alb_ingress_aws_debug: "false"
 
 # Cert manager deployment
-cert_manager_enabled: false
-# cert_manager_namespace: "cert-manager"
+cert_manager_enabled: true
+cert_manager_namespace: "cert-manager"
 # cert_manager_tolerations:
 #   - key: node-role.kubernetes.io/control-plane
 #     effect: NoSchedule
@@ -187,7 +187,7 @@ metallb_config:
   address_pools:
     primary:
       ip_range:
-        - 192.168.101.230-192.168.101.250
+        - 192.168.101.150-192.168.101.199
       auto_assign: true
 #     pool1:
 #       ip_range:
@@ -224,7 +224,7 @@ metallb_config:
 #           address_pool:
 #             - pool2
 
-argocd_enabled: true
+argocd_enabled: false
 argocd_version: v2.8.4
 argocd_namespace: argocd
 # Default password:

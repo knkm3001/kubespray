@@ -1,48 +1,56 @@
 all:
   hosts:
-    node1:
+    k8s-master01:
       ansible_host: 192.168.101.201
       ip: 192.168.101.201
       access_ip: 192.168.101.201
-    node2:
+    k8s-master02:
       ansible_host: 192.168.101.202
       ip: 192.168.101.202
       access_ip: 192.168.101.202
-    node3:
+    k8s-master03:
       ansible_host: 192.168.101.203
       ip: 192.168.101.203
       access_ip: 192.168.101.203
-    node4:
+    k8s-worker01:
       ansible_host: 192.168.101.204
       ip: 192.168.101.204
       access_ip: 192.168.101.204
-    node5:
+    k8s-worker02:
       ansible_host: 192.168.101.205
       ip: 192.168.101.205
       access_ip: 192.168.101.205
-    node6:
+    k8s-worker03:
       ansible_host: 192.168.101.206
       ip: 192.168.101.206
       access_ip: 192.168.101.206
+    raspi4b-worker01:
+      # raspi
+      ansible_host: 192.168.101.65
+      ip: 192.168.101.65
+      access_ip: 192.168.101.65
+      ansible_user: "{{ lookup('env', 'RASPI_USER') }}"
+      ansible_become_password: "{{ lookup('env', 'RASPI_BECOME_PASSWORD') }}"
   children:
     kube_control_plane:
       hosts:
-        node1:
-        node2:
-        node3:
+        k8s-master01:
+        k8s-master02:
+        k8s-master03:
     kube_node:
       hosts:
-        node1:
-        node2:
-        node3:
-        node4:
-        node5:
-        node6:
+        k8s-master01:
+        k8s-master02:
+        k8s-master03:
+        k8s-worker01:
+        k8s-worker02:
+        k8s-worker03:
+        raspi4b-worker01:
     etcd:
       hosts:
-        node1:
-        node2:
-        node3:
+        k8s-master01:
+        k8s-master02:
+        k8s-master03:
     k8s_cluster:
       children:
         kube_control_plane:
@@ -50,4 +58,5 @@ all:
     calico_rr:
       hosts: {}
   vars:
-      ansible_user: vm-admin
+    ansible_user: "{{ lookup('env', 'ANSIBLE_USER') }}"
+    ansible_become_password: "{{ lookup('env', 'ANSIBLE_BECOME_PASSWORD') }}"
